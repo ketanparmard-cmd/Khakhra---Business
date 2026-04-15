@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khakhra Pro-Business</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+        
+        :root {
+            --primary: #ff4757;
+            --secondary: #2ed573;
+            --dark: #1e272e;
+            --light-bg: #f1f2f6;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body { font-family: 'Outfit', sans-serif; background-color: var(--light-bg); margin: 0; overflow-x: hidden; }
+
+        .header-wrapper {
+            background: linear-gradient(135deg, #2f3542 0%, #1e272e 100%);
+            padding: 40px 20px 80px;
+            text-align: center;
+            color: white;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+
+        .header h1 { margin: 0; font-size: 28px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .header p { margin: 5px 0 0; opacity: 0.7; font-size: 14px; }
+
+        .container { max-width: 1100px; margin: -50px auto 0; padding: 0 15px 50px; }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            padding: 8px;
+            border-radius: 20px;
+            gap: 5px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #747d8c;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active { background: var(--dark); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block !important; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid #fff;
+        }
+
+        .stat-label { font-size: 12px; color: #747d8c; text-transform: uppercase; font-weight: 600; }
+        .stat-figure { font-size: 24px; font-weight: 600; margin-top: 10px; display: block; }
+
+        .glass-card { background: white; padding: 30px; border-radius: 25px; box-shadow: var(--shadow); }
+        .table-container { background: white; padding: 25px; border-radius: 25px; box-shadow: var(--shadow); margin-top: 25px; overflow-x: auto; }
+        
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { text-align: left; padding: 15px; font-size: 13px; color: #747d8c; border-bottom: 2px solid #f1f2f6; text-transform: uppercase; }
+        td { padding: 15px; border-bottom: 1px solid #f1f2f6; font-size: 15px; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full-width { grid-column: span 2; }
+        input, select { width: 100%; padding: 14px; border: 2px solid #f1f2f6; border-radius: 12px; background: #f8f9fa; font-family: inherit; box-sizing: border-box; outline: none; }
+        input:focus, select:focus { border-color: var(--dark); }
+        
+        .save-btn {
+            grid-column: span 2; padding: 18px; border: none; border-radius: 15px;
+            color: white; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
+        }
+
+        .badge { padding: 5px 12px; border-radius: 10px; font-size: 12px; font-weight: 600; }
+        .badge-buy { background: #ffe3e3; color: var(--primary); }
+        .badge-sell { background: #e3fcef; color: var(--secondary); }
+        .badge-pay { background: #f1f2f6; color: #747d8c; }
+
+        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .save-btn, .full-width { grid-column: span 1; } }
+    </style>
+</head>
+<body>
+
+<div class="header-wrapper">
+    <div class="header">
+        <h1><span class="material-icons">dashboard_customize</span> Khakhra Pro-Business</h1>
+        <p>Management System v2.0</p>
+    </div>
+</div>
+
+<div class="container">
+    
+    <div id="dashboard-summary" class="stats-grid">
+        <div class="stat-card" style="border-top: 5px solid #ffa502;">
+            <span class="stat-label">Stock Value</span>
+            <span id="stockValue" class="stat-figure">₹0</span>
+        </div>
+        <div class="stat-card" style="border-top: 5px solid var(--secondary);">
+            <span class="stat-label">Net Profit</span>
+            <span id="yrProfit" class="stat-figure" style="color:var(--secondary)">₹0</span>
+        </div>
+        <div class="stat-card" style="border-top: 5px solid var(--primary);">
+            <span class="stat-label">Purchases (-)</span>
+            <span id="dispPurchases" class="stat-figure" style="color:var(--primary)">₹0</span>
+        </div>
+        <div class="stat-card" style="border-top: 5px solid var(--dark);">
+            <span class="stat-label">Sales (+)</span>
+            <span id="dispSales" class="stat-figure">₹0</span>
+        </div>
+    </div>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-main')"><span class="material-icons">home</span> Dashboard</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-entry')"><span class="material-icons">edit_note</span> New Entry</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-stock')"><span class="material-icons">inventory</span> Stock</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-reports')"><span class="material-icons">bar_chart</span> Reports</button>
+    </div>
+
+    <div id="tab-main" class="tab-content active">
+        <div class="table-container">
+            <h3>📑 Transaction Logs</h3>
+            <table>
+                <thead><tr><th>Date</th><th>Type</th><th>Party</th><th>Item</th><th>Qty</th><th>Payment</th><th>Total</th></tr></thead>
+                <tbody id="bodyLogs"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="tab-entry" class="tab-content">
+        <div class="glass-card">
+            <h2>New Transaction Entry</h2>
+            <div class="form-grid" id="entryForm">
+                <div class="full-width">
+                    <label>Transaction Type</label>
+                    <select id="mType" onchange="updateEntryMode()">
+                        <option value="PURCHASE">📥 Purchase (Maal Aavyo)</option>
+                        <option value="SALE">📤 Sale (Maal Vechayo)</option>
+                    </select>
+                </div>
+                <div><label>Date</label><input type="date" id="mDate"></div>
+                <div><label id="lblParty">Vendor Name</label><input type="text" id="mParty" placeholder="Enter Name"></div>
+                <div><label>Select Item</label>
+                    <select id="mItem">
+                        <option value="">-- Choose Item --</option>
+                        <option value="Plain">Methi Khakhra</option>
+                        <option value="Masala">Masala Khakhra</option>
+                        <option value="Jeera">Jeera Khakhra</option>
+                    </select>
+                </div>
+                <div><label>Qty (kg)</label><input type="number" id="mQty" placeholder="0"></div>
+                <div><label id="lblPrice">Rate (₹/kg)</label><input type="number" id="mPrice" placeholder="0"></div>
+                
+                <div id="divPayMode" style="display:none;"><label>Payment Mode</label>
+                    <select id="mPayMode">
+                        <option value="Cash">💵 Cash</option>
+                        <option value="Online">📱 Online / G-Pay</option>
+                    </select>
+                </div>
+
+                <div id="divTrans"><label>Transport (₹)</label><input type="number" id="mTrans" value="0"></div>
+                
+                <button id="btnSave" class="save-btn" onclick="saveData()">
+                    <span class="material-icons">save</span> Save Entry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="tab-stock" class="tab-content">
+        <div class="table-container">
+            <h3>Live Inventory Status</h3>
+            <table>
+                <thead><tr><th>Item Name</th><th>In (Total)</th><th>Out (Total)</th><th>Current Stock</th><th>Value (Asset)</th></tr></thead>
+                <tbody id="bodyStock"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="tab-reports" class="tab-content">
+        <div class="table-container">
+            <h3>Monthly Financial Summary</h3>
+            <table>
+                <thead><tr><th>Month</th><th>Sold Qty</th><th>Revenue</th><th>Expense</th><th>Freight</th><th>Net Profit</th></tr></thead>
+                <tbody id="bodyMonthly"></tbody>
+            </table>
+        </div>
+        <div style="margin-top:20px; display:flex; gap:10px;">
+            <button onclick="downloadExcel()" class="tab-btn" style="background:var(--secondary); color:white">Download Excel</button>
+            <button onclick="factoryReset()" class="tab-btn" style="background:var(--primary); color:white">Wipe All Data</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('KhakhraUltimateDB')) || [];
+    const pNames = { "Plain": "Methi Khakhra", "Masala": "Masala Khakhra", "Jeera": "Jeera Khakhra" };
+
+    window.onload = () => {
+        document.getElementById('mDate').value = new Date().toISOString().split('T')[0];
+        updateEntryMode();
+        refreshUI();
+    };
+
+    function switchTab(event, tabId) {
+        document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.getElementById(tabId).classList.add("active");
+        event.currentTarget.classList.add("active");
+        
+        const stats = document.getElementById('dashboard-summary');
+        stats.style.display = (tabId === 'tab-main' || tabId === 'tab-reports') ? 'grid' : 'none';
+    }
+
+    function updateEntryMode() {
+        const type = document.getElementById('mType').value;
+        const btn = document.getElementById('btnSave');
+        const trans = document.getElementById('divTrans');
+        const payModeDiv = document.getElementById('divPayMode');
+
+        if(type === 'PURCHASE') {
+            document.getElementById('lblParty').innerText = "Vendor Name";
+            document.getElementById('lblPrice').innerText = "Purchase Rate";
+            trans.style.display = "block";
+            payModeDiv.style.display = "none";
+            btn.style.background = "var(--primary)";
+        } else {
+            document.getElementById('lblParty').innerText = "Customer Name";
+            document.getElementById('lblPrice').innerText = "Selling Rate";
+            trans.style.display = "none";
+            payModeDiv.style.display = "block";
+            btn.style.background = "var(--secondary)";
+        }
+    }
+
+    function saveData() {
+        const type = document.getElementById('mType').value;
+        const date = document.getElementById('mDate').value;
+        const party = document.getElementById('mParty').value || "-";
+        const item = document.getElementById('mItem').value;
+        const qty = parseFloat(document.getElementById('mQty').value) || 0;
+        const rate = parseFloat(document.getElementById('mPrice').value) || 0;
+        const trans = type === 'PURCHASE' ? (parseFloat(document.getElementById('mTrans').value) || 0) : 0;
+        const payMethod = type === 'SALE' ? document.getElementById('mPayMode').value : "-";
+
+        if(!item) return alert("Plese select an Item!");
+        if(qty <= 0 || rate <= 0) return alert("Qty and Rate must be more than 0");
+
+        db.push({ date, type, item, qty, rate, trans, party, payMethod });
+        localStorage.setItem('KhakhraUltimateDB', JSON.stringify(db));
+        
+        // --- COMPLETE FORM RESET ---
+        document.getElementById('mParty').value = "";
+        document.getElementById('mItem').selectedIndex = 0; // Dropdown reset
+        document.getElementById('mQty').value = "";
+        document.getElementById('mPrice').value = "";
+        document.getElementById('mTrans').value = "0";
+        if(type === 'SALE') document.getElementById('mPayMode').selectedIndex = 0;
+        
+        refreshUI();
+        alert("Success! Entry Saved.");
+    }
+
+    function refreshUI() {
+        let stock = { "Plain": { in: 0, out: 0, cost: 0 }, "Masala": { in: 0, out: 0, cost: 0 }, "Jeera": { in: 0, out: 0, cost: 0 } };
+        let monthly = {}, tInFlow = 0, tOutFlow = 0, tTransTotal = 0, tCogsTotal = 0;
+        
+        const logBody = document.getElementById('bodyLogs');
+        logBody.innerHTML = "";
+
+        db.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(e => {
+            let m = e.date.substring(0, 7);
+            if(!monthly[m]) monthly[m] = { qty:0, t:0, rev:0, cogs:0 };
+
+            let rowTotal = (e.qty * e.rate) + (e.type === 'PURCHASE' ? e.trans : 0);
+            
+            if(e.type === 'PURCHASE') {
+                stock[e.item].in += e.qty;
+                stock[e.item].cost += (e.qty * e.rate);
+                monthly[m].t += e.trans;
+                tOutFlow += rowTotal;
+                tTransTotal += e.trans;
+            } else {
+                stock[e.item].out += e.qty;
+                let avgPrice = stock[e.item].in > 0 ? (stock[e.item].cost / stock[e.item].in) : 0;
+                let cogs = e.qty * avgPrice;
+                monthly[m].qty += e.qty;
+                monthly[m].rev += (e.qty * e.rate);
+                monthly[m].cogs += cogs;
+                tInFlow += (e.qty * e.rate);
+                tCogsTotal += cogs;
+            }
+
+            logBody.innerHTML += `<tr>
+                <td>${e.date}</td>
+                <td><span class="badge ${e.type === 'PURCHASE' ? 'badge-buy' : 'badge-sell'}">${e.type}</span></td>
+                <td>${e.party}</td>
+                <td>${pNames[e.item]}</td>
+                <td>${e.qty} kg</td>
+                <td><span class="badge badge-pay">${e.payMethod || '-'}</span></td>
+                <td>₹${rowTotal.toFixed(0)}</td>
+            </tr>`;
+        });
+
+        const invBody = document.getElementById('bodyStock');
+        invBody.innerHTML = "";
+        let sValTotal = 0;
+        for(let k in stock) {
+            let bal = stock[k].in - stock[k].out;
+            let val = bal * (stock[k].in > 0 ? (stock[k].cost / stock[k].in) : 0);
+            sValTotal += val;
+            invBody.innerHTML += `<tr><td><b>${pNames[k]}</b></td><td>${stock[k].in}</td><td>${stock[k].out}</td><td><b style="color:${bal<10?'red':'green'}">${bal} kg</b></td><td>₹${val.toFixed(0)}</td></tr>`;
+        }
+
+        const mBody = document.getElementById('bodyMonthly');
+        mBody.innerHTML = "";
+        for(let m in monthly) {
+            let prof = monthly[m].rev - monthly[m].cogs - monthly[m].t;
+            mBody.innerHTML += `<tr><td>${m}</td><td>${monthly[m].qty} kg</td><td>₹${monthly[m].rev.toFixed(0)}</td><td>₹${monthly[m].cogs.toFixed(0)}</td><td>₹${monthly[m].t}</td><td style="color:var(--secondary); font-weight:600">₹${prof.toFixed(0)}</td></tr>`;
+        }
+
+        document.getElementById('stockValue').innerText = "₹" + sValTotal.toFixed(0);
+        document.getElementById('dispPurchases').innerText = "₹" + tOutFlow.toFixed(0);
+        document.getElementById('dispSales').innerText = "₹" + tInFlow.toFixed(0);
+        document.getElementById('yrProfit').innerText = "₹" + (tInFlow - tCogsTotal - tTransTotal).toFixed(0);
+    }
+
+    function downloadExcel() {
+        let csv = "Date,Type,Party,Item,Qty,Rate,PaymentMode,Transport,Total\n";
+        db.forEach(e => csv += `${e.date},${e.type},${e.party},${pNames[e.item]},${e.qty},${e.rate},${e.payMethod || '-'},${e.trans},${(e.qty*e.rate)+e.trans}\n`);
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `Khakhra_Business_Report.csv`;
+        a.click();
+    }
+
+    function factoryReset() {
+        if(confirm("DANGER: Wipe all records forever?")) {
+            localStorage.removeItem('KhakhraUltimateDB');
+            db = [];
+            refreshUI();
+        }
+    }
+</script>
+</body>
+</html>
