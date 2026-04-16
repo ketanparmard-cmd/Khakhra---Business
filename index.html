@@ -3,379 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khakhra Pro-Business</title>
+    <title>DCM Enterprise | Executive PRO v10.6</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+        :root { --sidebar-bg: #0f172a; --brand-blue: #2563eb; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; margin: 0; color: #1e293b; }
         
-        :root {
-            --primary: #ff4757;
-            --secondary: #2ed573;
-            --dark: #1e272e;
-            --light-bg: #f1f2f6;
-            --white: #ffffff;
-            --shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        body { font-family: 'Outfit', sans-serif; background-color: var(--light-bg); margin: 0; overflow-x: hidden; }
-
-        .header-wrapper {
-            background: linear-gradient(135deg, #2f3542 0%, #1e272e 100%);
-            padding: 40px 20px 80px;
-            text-align: center;
-            color: white;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-        }
-
-        .header h1 { margin: 0; font-size: 28px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .header p { margin: 5px 0 0; opacity: 0.7; font-size: 14px; }
-
-        .container { max-width: 1100px; margin: -50px auto 0; padding: 0 15px 50px; }
-
-        .nav-tabs {
-            display: flex;
-            background: white;
-            padding: 8px;
-            border-radius: 20px;
-            gap: 5px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 15px;
-            z-index: 1000;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            background: none;
-            cursor: pointer;
-            border-radius: 15px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: #747d8c;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active { background: var(--dark); color: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        #login-screen { position: fixed; inset: 0; z-index: 10000; background: radial-gradient(circle at top left, #1e293b 0%, #020617 100%); display: flex; align-items: center; justify-content: center; }
+        .login-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 40px; padding: 40px; width: 90%; max-width: 400px; text-align: center; }
+        
+        #sidebar { background: var(--sidebar-bg); width: 260px; height: 100vh; position: fixed; left: 0; top: 0; display: none; flex-direction: column; transition: transform 0.3s ease; z-index: 50; }
+        .nav-link { color: #94a3b8; padding: 14px 20px; border-radius: 12px; margin: 4px 16px; display: flex; align-items: center; gap: 12px; transition: 0.2s; font-size: 14px; }
+        .nav-link:hover { color: white; background: rgba(255,255,255,0.05); }
+        .nav-link.active { background: var(--brand-blue); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        
+        #main-container { padding: 30px; margin-left: 260px; min-height: 100vh; transition: 0.3s; display: none; }
+        
+        @media (min-width: 1024px) { #sidebar.auth-ready { display: flex !important; } #main-container.auth-ready { display: block !important; } }
+        @media (max-width: 1024px) { #sidebar { transform: translateX(-100%); display: flex !important; } #sidebar.mobile-open { transform: translateX(0); } #main-container { margin-left: 0 !important; padding: 20px; } #main-container.auth-ready { display: block !important; } }
+        
+        .card-stat { background: white; border-radius: 20px; border: 1px solid #e2e8f0; transition: 0.3s; cursor: pointer; }
+        .card-stat:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        
+        .tab-content { display: none; animation: slideIn 0.3s ease-out; }
         .tab-content.active { display: block !important; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--white);
-            padding: 25px;
-            border-radius: 24px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            border: 1px solid #fff;
-        }
-
-        .stat-label { font-size: 12px; color: #747d8c; text-transform: uppercase; font-weight: 600; }
-        .stat-figure { font-size: 24px; font-weight: 600; margin-top: 10px; display: block; }
-
-        .glass-card { background: white; padding: 30px; border-radius: 25px; box-shadow: var(--shadow); }
-        .table-container { background: white; padding: 25px; border-radius: 25px; box-shadow: var(--shadow); margin-top: 25px; overflow-x: auto; }
-        
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { text-align: left; padding: 15px; font-size: 13px; color: #747d8c; border-bottom: 2px solid #f1f2f6; text-transform: uppercase; }
-        td { padding: 15px; border-bottom: 1px solid #f1f2f6; font-size: 15px; }
-
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .full-width { grid-column: span 2; }
-        input, select { width: 100%; padding: 14px; border: 2px solid #f1f2f6; border-radius: 12px; background: #f8f9fa; font-family: inherit; box-sizing: border-box; outline: none; }
-        input:focus, select:focus { border-color: var(--dark); }
-        
-        .save-btn {
-            grid-column: span 2; padding: 18px; border: none; border-radius: 15px;
-            color: white; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
-        }
-
-        .badge { padding: 5px 12px; border-radius: 10px; font-size: 12px; font-weight: 600; }
-        .badge-buy { background: #ffe3e3; color: var(--primary); }
-        .badge-sell { background: #e3fcef; color: var(--secondary); }
-        .badge-pay { background: #f1f2f6; color: #747d8c; }
-
-        @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } .save-btn, .full-width { grid-column: span 1; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+        .hidden { display: none !important; }
     </style>
 </head>
-<body>
+<body class="antialiased overflow-x-hidden">
 
-<div class="header-wrapper">
-    <div class="header">
-        <h1><span class="material-icons">dashboard_customize</span> Khakhra Pro-Business</h1>
-        <p>Management System v2.0</p>
-    </div>
-</div>
-
-<div class="container">
-    
-    <div id="dashboard-summary" class="stats-grid">
-        <div class="stat-card" style="border-top: 5px solid #ffa502;">
-            <span class="stat-label">Stock Value</span>
-            <span id="stockValue" class="stat-figure">₹0</span>
-        </div>
-        <div class="stat-card" style="border-top: 5px solid var(--secondary);">
-            <span class="stat-label">Net Profit</span>
-            <span id="yrProfit" class="stat-figure" style="color:var(--secondary)">₹0</span>
-        </div>
-        <div class="stat-card" style="border-top: 5px solid var(--primary);">
-            <span class="stat-label">Purchases (-)</span>
-            <span id="dispPurchases" class="stat-figure" style="color:var(--primary)">₹0</span>
-        </div>
-        <div class="stat-card" style="border-top: 5px solid var(--dark);">
-            <span class="stat-label">Sales (+)</span>
-            <span id="dispSales" class="stat-figure">₹0</span>
-        </div>
-    </div>
-
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'tab-main')"><span class="material-icons">home</span> Dashboard</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-entry')"><span class="material-icons">edit_note</span> New Entry</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-stock')"><span class="material-icons">inventory</span> Stock</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-reports')"><span class="material-icons">bar_chart</span> Reports</button>
-    </div>
-
-    <div id="tab-main" class="tab-content active">
-        <div class="table-container">
-            <h3>📑 Transaction Logs</h3>
-            <table>
-                <thead><tr><th>Date</th><th>Type</th><th>Party</th><th>Item</th><th>Qty</th><th>Payment</th><th>Total</th></tr></thead>
-                <tbody id="bodyLogs"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div id="tab-entry" class="tab-content">
-        <div class="glass-card">
-            <h2>New Transaction Entry</h2>
-            <div class="form-grid" id="entryForm">
-                <div class="full-width">
-                    <label>Transaction Type</label>
-                    <select id="mType" onchange="updateEntryMode()">
-                        <option value="PURCHASE">📥 Purchase (Maal Aavyo)</option>
-                        <option value="SALE">📤 Sale (Maal Vechayo)</option>
-                    </select>
-                </div>
-                <div><label>Date</label><input type="date" id="mDate"></div>
-                <div><label id="lblParty">Vendor Name</label><input type="text" id="mParty" placeholder="Enter Name"></div>
-                <div><label>Select Item</label>
-                    <select id="mItem">
-                        <option value="">-- Choose Item --</option>
-                        <option value="Plain">Methi Khakhra</option>
-                        <option value="Masala">Masala Khakhra</option>
-                        <option value="Jeera">Jeera Khakhra</option>
-                    </select>
-                </div>
-                <div><label>Qty (kg)</label><input type="number" id="mQty" placeholder="0"></div>
-                <div><label id="lblPrice">Rate (₹/kg)</label><input type="number" id="mPrice" placeholder="0"></div>
-                
-                <div id="divPayMode" style="display:none;"><label>Payment Mode</label>
-                    <select id="mPayMode">
-                        <option value="Cash">💵 Cash</option>
-                        <option value="Online">📱 Online / G-Pay</option>
-                    </select>
-                </div>
-
-                <div id="divTrans"><label>Transport (₹)</label><input type="number" id="mTrans" value="0"></div>
-                
-                <button id="btnSave" class="save-btn" onclick="saveData()">
-                    <span class="material-icons">save</span> Save Entry
-                </button>
+    <div id="login-screen">
+        <div class="login-card shadow-2xl">
+            <h1 class="text-3xl font-bold text-white mb-2 italic uppercase">DCM <span class="text-blue-500">PRO</span></h1>
+            <p class="text-slate-400 text-[10px] tracking-[0.3em] font-bold mb-8 uppercase">Security Gateway</p>
+            <div class="space-y-4">
+                <input type="text" id="user" placeholder="Username" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500">
+                <input type="password" id="pass" placeholder="Password" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500">
+                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white font-bold p-4 rounded-2xl shadow-xl hover:bg-blue-700 transition uppercase">Login</button>
+                <p id="login-err" class="text-rose-500 text-xs font-bold hidden mt-2">Invalid Access!</p>
             </div>
         </div>
     </div>
 
-    <div id="tab-stock" class="tab-content">
-        <div class="table-container">
-            <h3>Live Inventory Status</h3>
-            <table>
-                <thead><tr><th>Item Name</th><th>In (Total)</th><th>Out (Total)</th><th>Current Stock</th><th>Value (Asset)</th></tr></thead>
-                <tbody id="bodyStock"></tbody>
-            </table>
+    <aside id="sidebar" class="sidebar">
+        <div class="p-8"><h1 class="text-2xl font-bold text-white uppercase italic">DCM <span class="text-blue-500">PRO</span></h1></div>
+        <nav class="flex-1 mt-4">
+            <a href="javascript:void(0)" onclick="switchTab(event, 'tab-main')" class="nav-link active" id="link-main"><i class="material-icons text-sm">dashboard</i> Dashboard</a>
+            <a href="javascript:void(0)" onclick="switchTab(event, 'tab-entry')" class="nav-link" id="link-entry"><i class="material-icons text-sm">add_box</i> New Entry</a>
+            <a href="javascript:void(0)" onclick="switchTab(event, 'tab-stock')" class="nav-link" id="link-stock"><i class="material-icons text-sm">inventory_2</i> Inventory</a>
+            <a href="javascript:void(0)" onclick="switchTab(event, 'tab-transport')" class="nav-link" id="link-transport"><i class="material-icons text-sm">local_shipping</i> Transport</a>
+            <a href="javascript:void(0)" onclick="switchTab(event, 'tab-reports')" class="nav-link" id="link-reports"><i class="material-icons text-sm">bar_chart</i> Analytics</a>
+        </nav>
+        <div class="p-6 border-t border-white/5"><button onclick="handleLogout()" class="w-full text-slate-500 hover:text-rose-500 flex items-center gap-2 font-bold text-xs uppercase px-4 transition"><i class="material-icons text-sm">logout</i> Logout</button></div>
+    </aside>
+
+    <header id="mobile-header" class="lg:hidden bg-slate-900 p-4 text-white flex justify-between items-center sticky top-0 z-[1001] hidden">
+        <h1 class="text-xl font-bold italic uppercase">DCM PRO</h1>
+        <button onclick="toggleSidebar()" class="material-icons bg-white/10 p-2 rounded-xl">menu</button>
+    </header>
+
+    <main id="main-container" class="main-container">
+        <header class="flex justify-between items-center mb-8">
+            <div><h2 class="text-2xl font-bold text-slate-800" id="page-title">Executive Summary</h2><p id="current-date" class="text-sm text-slate-400 font-medium"></p></div>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="card-stat p-6" onclick="switchTab(null, 'tab-stock')"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Inventory Value</span><h3 id="stockValue" class="text-2xl font-bold">₹0</h3></div>
+            <div class="card-stat p-6" onclick="switchTab(null, 'tab-reports')"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-emerald-500">Net Profit</span><h3 id="yrProfit" class="text-2xl font-bold text-emerald-600">₹0</h3></div>
+            <div class="card-stat p-6 border-l-4 border-rose-500" onclick="filterDashboard('PURCHASE')"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Purchases</span><h3 id="dispPurchases" class="text-2xl font-bold">₹0</h3></div>
+            <div class="card-stat p-6 border-l-4 border-blue-600" onclick="filterDashboard('SALE')"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Sales</span><h3 id="dispSales" class="text-2xl font-bold">₹0</h3></div>
         </div>
-    </div>
 
-    <div id="tab-reports" class="tab-content">
-        <div class="table-container">
-            <h3>Monthly Financial Summary</h3>
-            <table>
-                <thead><tr><th>Month</th><th>Sold Qty</th><th>Revenue</th><th>Expense</th><th>Freight</th><th>Net Profit</th></tr></thead>
-                <tbody id="bodyMonthly"></tbody>
-            </table>
+        <div id="tab-main" class="tab-content active">
+            <div class="flex items-center justify-between mb-4"><h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest italic" id="logTitle">Live Activity Logs</h3><button onclick="filterDashboard('ALL')" class="text-[9px] font-bold px-3 py-1 bg-slate-800 text-white rounded-lg">SHOW ALL</button></div>
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden overflow-x-auto"><table class="w-full text-left whitespace-nowrap text-sm"><thead><tr class="bg-slate-50"><th class="p-4 text-xs font-bold uppercase text-slate-400">Date</th><th class="p-4 text-xs font-bold uppercase text-slate-400">Type</th><th class="p-4 text-xs font-bold uppercase text-slate-400">Party</th><th class="p-4 text-xs font-bold uppercase text-slate-400">Item</th><th class="p-4 text-xs font-bold uppercase text-slate-400">Qty</th><th class="p-4 text-xs font-bold uppercase text-slate-400">Total</th><th class="p-4 text-center">Action</th></tr></thead><tbody id="bodyLogs" class="text-slate-600"></tbody></table></div>
         </div>
-        <div style="margin-top:20px; display:flex; gap:10px;">
-            <button onclick="downloadExcel()" class="tab-btn" style="background:var(--secondary); color:white">Download Excel</button>
-            <button onclick="factoryReset()" class="tab-btn" style="background:var(--primary); color:white">Wipe All Data</button>
+
+        <div id="tab-entry" class="tab-content">
+            <div class="bg-white rounded-[32px] shadow-2xl p-8 max-w-4xl border mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
+                    <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Mode</label><select id="mType" onchange="updateEntryMode()" class="w-full p-3 rounded-xl bg-slate-50 border font-bold outline-none"><option value="PURCHASE">PURCHASE</option><option value="SALE">SALE</option></select></div>
+                    <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Date</label><input type="date" id="mDate" class="w-full p-3 rounded-xl bg-slate-50 border font-bold outline-none"></div>
+                    <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Party</label><input type="text" id="mParty" placeholder="Name" class="w-full p-3 rounded-xl bg-slate-50 border font-bold outline-none"></div>
+                    <div class="md:col-span-3"><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Product</label><select id="mItem" class="w-full p-3 rounded-xl bg-slate-50 border font-bold outline-none"><option value="">-- Choose Product --</option><option value="Plain">Methi</option><option value="Masala">Masala</option><option value="Jeera">Jeera</option><option value="Farali">Farali</option><option value="Bajri">Bajri</option></select></div>
+                    <div class="md:col-span-1"><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Qty</label><input type="number" id="mQty" placeholder="0" class="w-full p-3 rounded-xl bg-slate-50 border font-bold outline-none"></div>
+                    <div class="md:col-span-1"><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Rate</label><input type="number" id="mPrice" placeholder="0" class="w-full p-3 rounded-xl bg-slate-50 border font-bold outline-none"></div>
+                    <div class="md:col-span-1" id="divPayMode" style="display:none"><label class="text-[10px] font-bold text-slate-400 uppercase mb-1 block">Pay</label><select id="mPayMode" class="w-full p-3 rounded-xl bg-emerald-50 border font-bold outline-none"><option value="Cash">Cash</option><option value="Online">Online</option></select></div>
+                    <button id="btnSave" onclick="saveData()" class="md:col-span-6 bg-blue-600 text-white font-bold p-4 rounded-2xl shadow-lg hover:bg-blue-700 transition uppercase tracking-widest mt-4">Confirm & Post</button>
+                </div>
+            </div>
         </div>
-    </div>
 
-</div>
+        <div id="tab-stock" class="tab-content"><div class="bg-white rounded-3xl shadow-sm border overflow-hidden overflow-x-auto"><table class="w-full text-left"><thead><tr class="bg-slate-900 text-white border-none"><th class="p-5">Category</th><th class="p-5">Stock In</th><th class="p-5">Stock Out</th><th class="p-5">Current Stock</th><th class="p-5">Asset Value</th></tr></thead><tbody id="bodyStock" class="font-bold text-slate-700 text-sm"></tbody></table></div></div>
 
-<script>
-    let db = JSON.parse(localStorage.getItem('KhakhraUltimateDB')) || [];
-    const pNames = { "Plain": "Methi Khakhra", "Masala": "Masala Khakhra", "Jeera": "Jeera Khakhra" };
+        <div id="tab-transport" class="tab-content"><div class="bg-white rounded-[32px] p-6 shadow-xl mb-8 border-l-8 border-orange-500"><div class="grid grid-cols-1 md:grid-cols-5 gap-4"><input type="date" id="tDate" class="p-3 rounded-xl bg-slate-50 border font-bold outline-none"><input type="text" id="tParty" placeholder="Trip Detail" class="p-3 rounded-xl bg-slate-50 border font-bold outline-none"><input type="number" id="tFuel" placeholder="Fuel" class="p-3 rounded-xl bg-slate-50 border font-bold outline-none"><input type="number" id="tToll" placeholder="Toll" class="p-3 rounded-xl bg-slate-50 border font-bold outline-none"><input type="number" id="tPass" placeholder="Pass (-)" class="p-3 rounded-xl bg-rose-50 border text-rose-600 font-bold outline-none"><button onclick="saveTransport()" class="md:col-span-5 bg-orange-500 text-white font-bold p-3 rounded-xl uppercase shadow-md transition hover:bg-orange-600">Update Freight</button></div></div><div class="bg-white rounded-3xl shadow-sm border overflow-hidden overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-slate-50"><tr><th class="p-4">Date</th><th class="p-4">Trip</th><th class="p-4">Fuel</th><th class="p-4">Toll</th><th class="p-4">Pass (-)</th><th class="p-4 text-blue-600">Total</th><th class="p-4 text-center">Action</th></tr></thead><tbody id="bodyTransport"></tbody></table></div></div>
 
-    window.onload = () => {
-        document.getElementById('mDate').value = new Date().toISOString().split('T')[0];
-        updateEntryMode();
-        refreshUI();
-    };
+        <div id="tab-reports" class="tab-content"><div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-8 overflow-x-auto"><table class="w-full text-left whitespace-nowrap"><thead class="bg-slate-50"><tr><th class="p-5 uppercase text-xs">Month</th><th class="p-5 uppercase text-xs">Revenue</th><th class="p-5 uppercase text-xs">COGS Cost</th><th class="p-5 uppercase text-xs">Freight</th><th class="p-5 text-right text-blue-600 uppercase text-xs font-bold">Net Profit</th></tr></thead><tbody id="bodyMonthly" class="font-bold text-slate-700 text-sm"></tbody></table></div><div class="flex justify-center gap-4"><button onclick="downloadCSV()" class="bg-slate-900 text-white px-8 py-3 rounded-xl font-bold text-xs shadow-xl"><i class="material-icons text-sm">download</i> Export Data</button><button onclick="factoryReset()" class="text-rose-400 text-[10px] font-bold uppercase hover:text-rose-600 transition">Wipe System Memory</button></div></div>
 
-    function switchTab(event, tabId) {
-        document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.getElementById(tabId).classList.add("active");
-        event.currentTarget.classList.add("active");
-        
-        const stats = document.getElementById('dashboard-summary');
-        stats.style.display = (tabId === 'tab-main' || tabId === 'tab-reports') ? 'grid' : 'none';
-    }
+    </main>
 
-    function updateEntryMode() {
-        const type = document.getElementById('mType').value;
-        const btn = document.getElementById('btnSave');
-        const trans = document.getElementById('divTrans');
-        const payModeDiv = document.getElementById('divPayMode');
+    <script>
+        const AUTH = { user: "admin", pass: "dcm786" };
+        let db = JSON.parse(localStorage.getItem('DCM_V10_PRO_DB')) || [];
+        let transDb = JSON.parse(localStorage.getItem('DCM_V10_PRO_TR')) || [];
+        const pNames = { "Plain": "Methi", "Masala": "Masala", "Jeera": "Jeera", "Farali": "Farali", "Bajri": "Bajri" };
+        let currentFilter = 'ALL';
 
-        if(type === 'PURCHASE') {
-            document.getElementById('lblParty').innerText = "Vendor Name";
-            document.getElementById('lblPrice').innerText = "Purchase Rate";
-            trans.style.display = "block";
-            payModeDiv.style.display = "none";
-            btn.style.background = "var(--primary)";
-        } else {
-            document.getElementById('lblParty').innerText = "Customer Name";
-            document.getElementById('lblPrice').innerText = "Selling Rate";
-            trans.style.display = "none";
-            payModeDiv.style.display = "block";
-            btn.style.background = "var(--secondary)";
-        }
-    }
-
-    function saveData() {
-        const type = document.getElementById('mType').value;
-        const date = document.getElementById('mDate').value;
-        const party = document.getElementById('mParty').value || "-";
-        const item = document.getElementById('mItem').value;
-        const qty = parseFloat(document.getElementById('mQty').value) || 0;
-        const rate = parseFloat(document.getElementById('mPrice').value) || 0;
-        const trans = type === 'PURCHASE' ? (parseFloat(document.getElementById('mTrans').value) || 0) : 0;
-        const payMethod = type === 'SALE' ? document.getElementById('mPayMode').value : "-";
-
-        if(!item) return alert("Plese select an Item!");
-        if(qty <= 0 || rate <= 0) return alert("Qty and Rate must be more than 0");
-
-        db.push({ date, type, item, qty, rate, trans, party, payMethod });
-        localStorage.setItem('KhakhraUltimateDB', JSON.stringify(db));
-        
-        // --- COMPLETE FORM RESET ---
-        document.getElementById('mParty').value = "";
-        document.getElementById('mItem').selectedIndex = 0; // Dropdown reset
-        document.getElementById('mQty').value = "";
-        document.getElementById('mPrice').value = "";
-        document.getElementById('mTrans').value = "0";
-        if(type === 'SALE') document.getElementById('mPayMode').selectedIndex = 0;
-        
-        refreshUI();
-        alert("Success! Entry Saved.");
-    }
-
-    function refreshUI() {
-        let stock = { "Plain": { in: 0, out: 0, cost: 0 }, "Masala": { in: 0, out: 0, cost: 0 }, "Jeera": { in: 0, out: 0, cost: 0 } };
-        let monthly = {}, tInFlow = 0, tOutFlow = 0, tTransTotal = 0, tCogsTotal = 0;
-        
-        const logBody = document.getElementById('bodyLogs');
-        logBody.innerHTML = "";
-
-        db.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(e => {
-            let m = e.date.substring(0, 7);
-            if(!monthly[m]) monthly[m] = { qty:0, t:0, rev:0, cogs:0 };
-
-            let rowTotal = (e.qty * e.rate) + (e.type === 'PURCHASE' ? e.trans : 0);
-            
-            if(e.type === 'PURCHASE') {
-                stock[e.item].in += e.qty;
-                stock[e.item].cost += (e.qty * e.rate);
-                monthly[m].t += e.trans;
-                tOutFlow += rowTotal;
-                tTransTotal += e.trans;
-            } else {
-                stock[e.item].out += e.qty;
-                let avgPrice = stock[e.item].in > 0 ? (stock[e.item].cost / stock[e.item].in) : 0;
-                let cogs = e.qty * avgPrice;
-                monthly[m].qty += e.qty;
-                monthly[m].rev += (e.qty * e.rate);
-                monthly[m].cogs += cogs;
-                tInFlow += (e.qty * e.rate);
-                tCogsTotal += cogs;
-            }
-
-            logBody.innerHTML += `<tr>
-                <td>${e.date}</td>
-                <td><span class="badge ${e.type === 'PURCHASE' ? 'badge-buy' : 'badge-sell'}">${e.type}</span></td>
-                <td>${e.party}</td>
-                <td>${pNames[e.item]}</td>
-                <td>${e.qty} kg</td>
-                <td><span class="badge badge-pay">${e.payMethod || '-'}</span></td>
-                <td>₹${rowTotal.toFixed(0)}</td>
-            </tr>`;
-        });
-
-        const invBody = document.getElementById('bodyStock');
-        invBody.innerHTML = "";
-        let sValTotal = 0;
-        for(let k in stock) {
-            let bal = stock[k].in - stock[k].out;
-            let val = bal * (stock[k].in > 0 ? (stock[k].cost / stock[k].in) : 0);
-            sValTotal += val;
-            invBody.innerHTML += `<tr><td><b>${pNames[k]}</b></td><td>${stock[k].in}</td><td>${stock[k].out}</td><td><b style="color:${bal<10?'red':'green'}">${bal} kg</b></td><td>₹${val.toFixed(0)}</td></tr>`;
+        function handleLogin() {
+            const u = document.getElementById('user').value;
+            const p = document.getElementById('pass').value;
+            if(u === AUTH.user && p === AUTH.pass) { sessionStorage.setItem('dcm_auth', 'true'); initApp(); }
+            else { document.getElementById('login-err').classList.remove('hidden'); }
         }
 
-        const mBody = document.getElementById('bodyMonthly');
-        mBody.innerHTML = "";
-        for(let m in monthly) {
-            let prof = monthly[m].rev - monthly[m].cogs - monthly[m].t;
-            mBody.innerHTML += `<tr><td>${m}</td><td>${monthly[m].qty} kg</td><td>₹${monthly[m].rev.toFixed(0)}</td><td>₹${monthly[m].cogs.toFixed(0)}</td><td>₹${monthly[m].t}</td><td style="color:var(--secondary); font-weight:600">₹${prof.toFixed(0)}</td></tr>`;
-        }
+        function handleLogout() { sessionStorage.removeItem('dcm_auth'); location.reload(); }
 
-        document.getElementById('stockValue').innerText = "₹" + sValTotal.toFixed(0);
-        document.getElementById('dispPurchases').innerText = "₹" + tOutFlow.toFixed(0);
-        document.getElementById('dispSales').innerText = "₹" + tInFlow.toFixed(0);
-        document.getElementById('yrProfit').innerText = "₹" + (tInFlow - tCogsTotal - tTransTotal).toFixed(0);
-    }
-
-    function downloadExcel() {
-        let csv = "Date,Type,Party,Item,Qty,Rate,PaymentMode,Transport,Total\n";
-        db.forEach(e => csv += `${e.date},${e.type},${e.party},${pNames[e.item]},${e.qty},${e.rate},${e.payMethod || '-'},${e.trans},${(e.qty*e.rate)+e.trans}\n`);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `Khakhra_Business_Report.csv`;
-        a.click();
-    }
-
-    function factoryReset() {
-        if(confirm("DANGER: Wipe all records forever?")) {
-            localStorage.removeItem('KhakhraUltimateDB');
-            db = [];
+        function initApp() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('sidebar').classList.add('auth-ready');
+            document.getElementById('main-container').classList.add('auth-ready');
+            document.getElementById('mobile-header').classList.remove('hidden');
+            document.body.style.overflow = "auto";
             refreshUI();
         }
-    }
-</script>
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('mobile-open'); }
+
+        window.onload = () => {
+            if(sessionStorage.getItem('dcm_auth') === 'true') initApp();
+            document.getElementById('mDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('tDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', month:'long', day:'numeric'});
+        };
+
+        function switchTab(event, tabId) {
+            document.querySelectorAll(".tab-content").forEach(t => t.classList.remove("active"));
+            document.querySelectorAll(".nav-link").forEach(b => b.classList.remove("active"));
+            document.getElementById(tabId).classList.add("active");
+            if(event) { event.preventDefault(); event.currentTarget.classList.add("active"); }
+            else { document.getElementById('link-' + tabId.split('-')[1]).classList.add("active"); }
+            if(window.innerWidth < 1024) document.getElementById('sidebar').classList.remove('mobile-open');
+        }
+
+        function filterDashboard(type) { currentFilter = type; refreshUI(); switchTab(null, 'tab-main'); }
+        
+        function updateEntryMode() { 
+            const type = document.getElementById('mType').value; 
+            document.getElementById('divPayMode').style.display = type === 'SALE' ? 'block' : 'none'; 
+            document.getElementById('btnSave').style.background = type === 'PURCHASE' ? '#2563eb' : '#059669'; 
+        }
+
+        function saveData() {
+            const data = { type: document.getElementById('mType').value, date: document.getElementById('mDate').value, party: document.getElementById('mParty').value || "-", item: document.getElementById('mItem').value, qty: parseFloat(document.getElementById('mQty').value) || 0, rate: parseFloat(document.getElementById('mPrice').value) || 0, payMode: document.getElementById('mPayMode').value };
+            
+            if(!data.item || data.qty <= 0) return alert("Plese select product & enter quantity!");
+            
+            db.push(data); 
+            localStorage.setItem('DCM_V10_PRO_DB', JSON.stringify(db));
+            
+            // --- PRODUCT RESET START ---
+            document.getElementById('mParty').value = ""; 
+            document.getElementById('mQty').value = ""; 
+            document.getElementById('mPrice').value = "";
+            document.getElementById('mItem').value = ""; // Dropdown reset to blank
+            // --- PRODUCT RESET END ---
+
+            refreshUI(); 
+            alert("Record Saved & System Updated!");
+        }
+
+        function saveTransport() {
+            const data = { date: document.getElementById('tDate').value, party: document.getElementById('tParty').value || "Trip", fuel: parseFloat(document.getElementById('tFuel').value) || 0, toll: parseFloat(document.getElementById('tToll').value) || 0, pass: parseFloat(document.getElementById('tPass').value) || 0 };
+            transDb.push(data); localStorage.setItem('DCM_V10_PRO_TR', JSON.stringify(transDb));
+            document.getElementById('tFuel').value = ""; document.getElementById('tToll').value = ""; document.getElementById('tPass').value = "";
+            refreshUI(); alert("Freight Recorded!");
+        }
+
+        function deleteItem(i, mode) {
+            if(!confirm("Sure?")) return;
+            if(mode === 'main') db.splice(i, 1); else transDb.splice(i, 1);
+            localStorage.setItem('DCM_V10_PRO_DB', JSON.stringify(db));
+            localStorage.setItem('DCM_V10_PRO_TR', JSON.stringify(transDb));
+            refreshUI();
+        }
+
+        function refreshUI() {
+            let stock = { "Plain": { in: 0, out: 0, cost: 0 }, "Masala": { in: 0, out: 0, cost: 0 }, "Jeera": { in: 0, out: 0, cost: 0 }, "Farali": { in: 0, out: 0, cost: 0 }, "Bajri": { in: 0, out: 0, cost: 0 } };
+            let tPur = 0, tSal = 0, monthly = {};
+
+            db.forEach(e => {
+                const m = e.date.substring(0, 7);
+                if(!monthly[m]) monthly[m] = { rev:0, cogs:0, tra:0 };
+                const tot = e.qty * e.rate;
+                if(e.type === 'PURCHASE') { 
+                    stock[e.item].in += e.qty; stock[e.item].cost += tot; tPur += tot; 
+                }
+            });
+
+            const logBody = document.getElementById('bodyLogs'); logBody.innerHTML = "";
+            db.sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach((e, i) => {
+                const tot = e.qty * e.rate;
+                const m = e.date.substring(0, 7);
+                if(e.type === 'SALE') {
+                    stock[e.item].out += e.qty; tSal += tot; monthly[m].rev += tot;
+                    let avg = stock[e.item].in > 0 ? (stock[e.item].cost / stock[e.item].in) : 0;
+                    monthly[m].cogs += (e.qty * avg);
+                }
+                if(currentFilter === 'ALL' || e.type === currentFilter) {
+                    logBody.innerHTML += `<tr class="border-b hover:bg-slate-50 transition"><td class="p-4 font-bold text-slate-400 text-xs">${e.date}</td><td><span class="${e.type==='PURCHASE'?'text-rose-500 bg-rose-50':'text-emerald-500 bg-emerald-50'} font-bold text-[9px] px-2 py-1 rounded uppercase tracking-widest">${e.type}</span></td><td class="font-semibold">${e.party}</td><td class="text-blue-600 font-bold">${pNames[e.item]}</td><td>${e.qty} kg</td><td class="font-bold text-slate-900">₹${tot.toFixed(0)}</td><td class="p-4 text-center"><i class="material-icons text-slate-300 cursor-pointer hover:text-rose-500 transition" onclick="deleteItem(${i}, 'main')">delete_outline</i></td></tr>`;
+                }
+            });
+
+            const trBody = document.getElementById('bodyTransport'); trBody.innerHTML = "";
+            let totalTraExpense = 0;
+            transDb.forEach((e, i) => {
+                const m = e.date.substring(0, 7);
+                const netTot = (e.fuel + e.toll) - e.pass;
+                totalTraExpense += netTot;
+                if(monthly[m]) monthly[m].tra += netTot;
+                trBody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-4 font-bold text-slate-400 text-xs">${e.date}</td><td>${e.party}</td><td>₹${e.fuel}</td><td>₹${e.toll}</td><td class="text-rose-500">-₹${e.pass}</td><td class="text-blue-600 font-bold">₹${netTot}</td><td class="text-center"><i class="material-icons text-slate-300 cursor-pointer hover:text-rose-500 transition" onclick="deleteItem(${i}, 'tr')">delete_outline</i></td></tr>`;
+            });
+
+            let sVal = 0; const sBody = document.getElementById('bodyStock'); sBody.innerHTML = "";
+            for(let k in stock) {
+                const bal = stock[k].in - stock[k].out;
+                const avg = stock[k].in > 0 ? (stock[k].cost / stock[k].in) : 0;
+                const assetVal = bal * avg; sVal += assetVal;
+                sBody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-5 text-slate-900 font-bold">${pNames[k]} Khakhra</td><td>${stock[k].in} kg</td><td>${stock[k].out} kg</td><td class="${bal<10?'text-rose-500':'text-blue-600'} font-bold">${bal} kg</td><td class="font-bold">₹${assetVal.toFixed(0)}</td></tr>`;
+            }
+
+            const rBody = document.getElementById('bodyMonthly'); rBody.innerHTML = "";
+            Object.keys(monthly).sort().reverse().forEach(m => {
+                const profit = monthly[m].rev - monthly[m].cogs - monthly[m].tra;
+                rBody.innerHTML += `<tr class="border-b hover:bg-slate-50"><td class="p-5 font-bold text-slate-400 uppercase">${m}</td><td>₹${monthly[m].rev.toFixed(0)}</td><td>₹${monthly[m].cogs.toFixed(0)}</td><td class="text-rose-400 font-medium">₹${monthly[m].tra.toFixed(0)}</td><td class="text-right p-5 text-lg font-bold ${profit>=0?'text-emerald-600':'text-rose-600'}">₹${profit.toFixed(0)}</td></tr>`;
+            });
+
+            document.getElementById('stockValue').innerText = "₹" + sVal.toFixed(0);
+            document.getElementById('dispPurchases').innerText = "₹" + tPur.toFixed(0);
+            document.getElementById('dispSales').innerText = "₹" + tSal.toFixed(0);
+            document.getElementById('yrProfit').innerText = "₹" + (tSal - (tPur - sVal) - totalTraExpense).toFixed(0);
+        }
+
+        function factoryReset() { if(confirm("બધો ડેટા ઉડી જશે!")) { localStorage.clear(); location.reload(); } }
+        function downloadCSV() { let csv = "Date,Type,Party,Item,Qty,Rate,Total\n"; db.forEach(e => csv += `${e.date},${e.type},${e.party},${pNames[e.item]},${e.qty},${e.rate},${e.qty*e.rate}\n`); const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "DCM_Premium_Report.csv"; a.click(); }
+    </script>
 </body>
 </html>
